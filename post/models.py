@@ -6,6 +6,7 @@ class Post(models.Model):
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    likes = models.ManyToManyField('user.CustomUser', related_name='like_posts')
     author = models.ForeignKey('user.CustomUser', on_delete=models.CASCADE, related_name='posts')
     
     def __str__(self):

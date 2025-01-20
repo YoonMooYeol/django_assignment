@@ -135,17 +135,15 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework_simplejwt.views import TokenObtainPairView
-from rest_framework.permissions import BasePermission, IsAuthenticated
-
 from user.models import CustomUser
-from user.serializers import UserSerializer, CustomTokenObtainPairSerializer, UserUserRetrieveUpdateDestroySerializer
+from user.serializers import UserSerializer, UserUserRetrieveUpdateDestroySerializer
 from django_assignment.permissions import IsOwnerOrReadOnly
-
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 
 class CustomTokenObtainPairView(TokenObtainPairView):
-    serializer_class = CustomTokenObtainPairSerializer
-
+    serializer_class = TokenObtainPairSerializer
+    
 
 class CustomUserListCreateView(APIView):
     
@@ -167,7 +165,9 @@ class CustomUserListCreateView(APIView):
         try:
             serializer = UserSerializer(data=request.data)
             if serializer.is_valid():
-                serializer.save()
+                user = serializer.save()
+                user.is_active = True
+                user.save()
                 return Response(
                     serializer.data, 
                     status=status.HTTP_201_CREATED
@@ -182,6 +182,9 @@ class CustomUserListCreateView(APIView):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
+
+
+    
 
 class CustomUserRetrieveUpdateDestroyView(APIView):
     permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]

@@ -2,6 +2,9 @@ from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from .models import CustomUser
 
+
+
+
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
     
@@ -19,9 +22,5 @@ class UserUserRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         fields = ('email','password', 'profile_image', 'bio', 'author')
 
 
-class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
-    def validate(self, attrs):
-        data = super().validate(attrs)
-        data['user_id'] = self.user.id
-        data['username'] = self.user.username
-        return data
+
+

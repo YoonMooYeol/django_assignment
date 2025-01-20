@@ -14,5 +14,9 @@ from django.urls import path
 from . import views 
 
 urlpatterns = [
+    path('', views.PostListCreateView.as_view(), name='post_list'),
+    path('<int:pk>/', views.PostDetailUpdateDestroyView.as_view(), name='post_detail'),
+    path('<int:pk>/comments/', views.CommentListCreateView.as_view(), name='comment-list'),
+    path('<int:pk>/comments/<int:comment_pk>/', views.CommentDetailUpdateDestroyView.as_view(), name='comment-detail'),
     
 ]
