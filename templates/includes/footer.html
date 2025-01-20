@@ -1,0 +1,29 @@
+<footer class="footer mt-auto py-3 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <h5>About Us</h5>
+                <p>무열의 커뮤니티에 오신 것을 환영합니다.</p>
+            </div>
+            <div class="col-md-4">
+                <h5>Quick Links</h5>
+                <ul class="list-unstyled">
+                    <li><a href="{% url 'post_list' %}">최신 포스트</a></li>
+                    <li><a href="{% url 'profiles' %}">사용자 목록</a></li>
+                    
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h5>Contact</h5>
+                <ul class="list-unstyled">
+                    <li>Email: agecross2@gmail.com</li>
+                    <li>GitHub: <a href="https://github.com" target="_blank">github.com/yourproject</a></li>
+                </ul>
+            </div>
+        </div>
+        <hr>
+        <div class="text-center">
+            <small>&copy; {% now "Y" %} Your Project Name. All rights reserved.</small>
+        </div>
+    </div>
+</footer>

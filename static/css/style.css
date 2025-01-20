@@ -1,0 +1,58 @@
+/* static/css/style.css */
+
+/* 기존 스타일 유지 */
+.post-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.post-title {
+  color: #333;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.post-list {
+  display: flex;
+  flex-direction: column;
+}
+
+/* 프로필 이미지 스타일 추가 */
+.profile-image {
+  width: 200px;  /* 기본 너비 */
+  height: 200px; /* 기본 높이 */
+  object-fit: cover; /* 이미지 비율 유지 */
+  border-radius: 50%; /* 원형 이미지 */
+  border: 3px solid #eee; /* 테두리 */
+  margin: 20px auto; /* 중앙 정렬 */
+}
+
+/* 반응형 이미지 크기 */
+@media (max-width: 300px) {
+  .profile-image {
+    width: 150px;
+    height: 150px;
+  }
+}
+
+/* static/css/style.css에 추가 */
+.follow-info {
+  margin: 20px 0;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 5px;
+}
+
+.followers-list, .following-list {
+  margin: 10px 0;
+  padding: 10px;
+  background-color: white;
+  border-radius: 3px;
+}
+
+.followers-list p, .following-list p {
+  margin: 5px 0;
+  padding: 5px;
+  border-bottom: 1px solid #eee;
+}

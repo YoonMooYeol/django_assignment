@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}" />
+<title>사용자 목록</title>
+{% endblock head %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>사용자 목록</h2>
+    <div class="user-list">
+        {% for user_profile in users %}
+            <div class="user-item">
+                <div class="user-info">
+                    <h3><a href="{% url 'profile' user_profile.id %}">{{ user_profile.username }}</a></h3>
+                    <p>팔로워: {{ user_profile.followers.count }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}

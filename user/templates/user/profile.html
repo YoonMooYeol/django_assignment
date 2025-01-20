@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}프로필{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<script>
+function followToggle(userId) {
+    fetch(`/users/follow/${userId}/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            alert(data.error);
+        } else {
+            document.getElementById('followersCount').textContent = data.followers_count;
+            document.getElementById('followingCount').textContent = data.following_count;
+            const btn = document.querySelector('.follow-btn');
+            btn.textContent = data.is_following ? '언팔로우' : '팔로우';
+            alert(data.message);
+        }
+    });
+}
+</script>
+{% endblock head %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <img src="{{ user.profile_image.url }}" class="card-img-top profile-image" alt="프로필 이미지">
+            <div class="card-body">
+                <h3 class="card-title">{{ user.username }}</h3>
+                <p class="card-text">{{ user.bio }}</p>
+                <p class="card-text"><small class="text-muted">{{ user.email }}</small></p>
+                <div class="profile-container">
+                    {% if user != request.user %} 
+                        <form method="post" action="{% url 'follow_toggle' user.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-primary mb-3 follow-btn">
+                                {% if request.user in user.followers.all %}
+                                    언팔로우
+                                {% else %}
+                                    팔로우
+                                {% endif %}
+                            </button>
+                        </form>
+                        {% endif %}
+                    </div>
+                
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-8">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        팔로워 (<span id="followersCount">{{ followers_count }}</span>)
+                    </div>
+                    <div class="card-body followers-list">
+                        {% for follower in user.followers.all %}
+                            <p><a href="{% url 'profile' follower.id %}">{{ follower.username }}</a></p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        팔로잉 (<span id="followingCount">{{ following_count }}</span>)
+                    </div>
+                    <div class="card-body following-list">
+                        {% for following in user.followings.all %}
+                            <p><a href="{% url 'profile' following.id %}">{{ following.username }}</a></p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="profile-actions mt-3">
+            {% if user == request.user %}
+                <a href="{% url 'update_profile' %}" class="btn btn-primary">프로필 수정</a>
+                
+                <!-- 삭제 버튼 추가 -->
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                    프로필 삭제
+                </button>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- 삭제 확인 모달 -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">프로필 삭제 확인</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>정말 프로필을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                <form method="post" action="{% url 'delete_profile' %}" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">삭제</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

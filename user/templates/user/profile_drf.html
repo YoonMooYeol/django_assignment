@@ -1,0 +1,39 @@
+<!-- templates/user/profile.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <img src="{{ user.profile_image.url|default:'/static/default-profile.png' }}" 
+                         class="rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover;">
+                    <h3 class="card-title">{{ user.username }}</h3>
+                    <p class="card-text">{{ user.bio|default:"소개글이 없습니다." }}</p>
+                    <div class="d-flex justify-content-around mb-3">
+                        <div>팔로워 <strong>{{ user.followers.count }}</strong></div>
+                        <div>팔로잉 <strong>{{ user.followings.count }}</strong></div>
+                    </div>
+                    {% if user == request.user %}
+                        <a href="{% url 'update_profile' %}" class="btn btn-primary">프로필 수정</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <h4>작성한 게시글</h4>
+            {% for post in user.posts.all %}
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ post.title }}</h5>
+                        <p class="card-text">{{ post.content|truncatewords:30 }}</p>
+                    </div>
+                </div>
+            {% empty %}
+                <p>작성한 게시글이 없습니다.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
