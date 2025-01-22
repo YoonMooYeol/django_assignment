@@ -136,7 +136,7 @@ from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework_simplejwt.views import TokenObtainPairView
 from user.models import CustomUser
-from user.serializers import UserSerializer, UserUserRetrieveUpdateDestroySerializer
+from user.serializers import UserSerializer, UserRetrieveUpdateDestroySerializer
 from django_assignment.permissions import IsOwnerOrReadOnly
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
@@ -210,7 +210,7 @@ class CustomUserRetrieveUpdateDestroyView(APIView):
                     status=status.HTTP_403_FORBIDDEN
                 )
                 
-            serializer = UserUserRetrieveUpdateDestroySerializer(user, data=request.data)
+            serializer = UserRetrieveUpdateDestroySerializer(user, data=request.data)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data)

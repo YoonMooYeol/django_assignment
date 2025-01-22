@@ -188,7 +188,7 @@ class CommentDetailUpdateDestroyView(APIView):
                 {"error": str(e)}, 
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
-     
+    
     
     def put(self, request, pk, comment_pk):
         try:
